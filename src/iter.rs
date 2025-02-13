@@ -1,6 +1,5 @@
 use crate::character::Character;
 use crate::converter::Converter;
-use crate::seal;
 
 /// Trait for an FM-Index implementation.
 ///
@@ -33,9 +32,7 @@ pub trait FMIndexBackend {
 
     /// Get the converter for this index.
     fn get_converter(&self) -> &Self::C;
-}
 
-pub trait FMIndexBackendWithPosition: FMIndexBackend {
     fn get_sa(&self, i: u64) -> u64;
 }
 
