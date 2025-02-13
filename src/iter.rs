@@ -35,6 +35,10 @@ pub trait FMIndexBackend {
     fn get_converter(&self) -> &Self::C;
 }
 
+pub trait FMIndexBackendWithPosition: FMIndexBackend {
+    fn get_sa(&self, i: u64) -> u64;
+}
+
 /// Access the heap size of the structure.
 ///
 /// This can be useful if you want to fine-tune the memory usage of your
@@ -46,8 +50,7 @@ pub trait HeapSize {
 
 /// A trait for an index that supports locate queries.
 pub trait HasPosition {
-    #[doc(hidden)]
-    fn get_sa<L: seal::IsLocal>(&self, i: u64) -> u64;
+    fn get_sa(&self, i: u64) -> u64;
 }
 
 /// An iterator that goes backwards through the text, producing [`Character`].

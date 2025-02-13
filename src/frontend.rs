@@ -103,6 +103,18 @@ where
         debug_assert!(i < self.backend.len());
         BackwardIterator::new(self.backend.clone(), self.s + i)
     }
+
+    // Get an iterator that goes forwards through the text, producing
+    /// [`Character`].
+    pub fn iter_forward(&self, i: u64) -> impl Iterator<Item = T> {
+        let m = self.count();
+
+        debug_assert!(m > 0, "cannot iterate from empty search result");
+        debug_assert!(i < m, "{} is out of range", i);
+        debug_assert!(i < self.backend.len());
+
+        ForwardIterator::new(self.backend.clone(), self.s + i)
+    }
 }
 
 /// An iterator that goes backwards through the text, producing [`Character`].

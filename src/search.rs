@@ -108,7 +108,7 @@ where
     pub fn locate(&self) -> Vec<u64> {
         let mut results: Vec<u64> = Vec::with_capacity((self.e - self.s) as usize);
         for k in self.s..self.e {
-            results.push(self.index.get_sa::<seal::Local>(k));
+            results.push(self.index.get_sa(k));
         }
         results
     }

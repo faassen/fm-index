@@ -279,7 +279,7 @@ where
     T: Character,
     C: Converter<T>,
 {
-    fn get_sa<L: seal::IsLocal>(&self, mut i: u64) -> u64 {
+    fn get_sa(&self, mut i: u64) -> u64 {
         let mut steps = 0;
         loop {
             match self.suffix_array.get(i) {
