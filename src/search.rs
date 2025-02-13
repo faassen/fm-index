@@ -5,7 +5,7 @@ use crate::converter;
 
 use crate::converter::IndexWithConverter;
 use crate::iter::{FMIndexBackend, HasPosition};
-use crate::seal;
+use crate::{seal, BackwardIterator, ForwardIterator};
 
 /// An object containing the result of a search.
 ///
@@ -40,8 +40,8 @@ where
         let mut e = self.e;
         let mut pattern = pattern.as_ref().to_vec();
         for &c in pattern.iter().rev() {
-            s = self.index.lf_map2::<seal::Local>(c, s);
-            e = self.index.lf_map2::<seal::Local>(c, e);
+            s = self.index.lf_map2(c, s);
+            e = self.index.lf_map2(c, e);
             if s == e {
                 break;
             }
@@ -79,7 +79,8 @@ where
         debug_assert!(m > 0, "cannot iterate from empty search result");
         debug_assert!(i < m, "{} is out of range", i);
 
-        self.index.iter_backward::<seal::Local>(self.s + i)
+        debug_assert!(i < self.index.len());
+        BackwardIterator::new(self.index, self.s + i)
     }
 }
 
@@ -94,8 +95,9 @@ where
 
         debug_assert!(m > 0, "cannot iterate from empty search result");
         debug_assert!(i < m, "{} is out of range", i);
+        debug_assert!(i < self.index.len());
 
-        self.index.iter_forward::<seal::Local>(self.s + i)
+        ForwardIterator::new(self.index, self.s + i)
     }
 }
 
