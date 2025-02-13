@@ -10,6 +10,8 @@ use crate::seal;
 pub trait FMIndexBackend {
     /// A [`Character`] type.
     type T: Character;
+    /// The converter type.
+    type C: Converter<Self::T>;
 
     fn fl_map(&self, i: u64) -> u64;
 
@@ -28,6 +30,9 @@ pub trait FMIndexBackend {
     /// Note that this includes an ending \0 (terminator) character
     /// so will be one more than the length of the text.
     fn len(&self) -> u64;
+
+    /// Get the converter for this index.
+    fn get_converter(&self) -> &Self::C;
 }
 
 /// Access the heap size of the structure.
@@ -66,7 +71,7 @@ where
 impl<T, I> Iterator for BackwardIterator<'_, I>
 where
     T: Character,
-    I: FMIndexBackend<T = T> + IndexWithConverter<T>,
+    I: FMIndexBackend<T = T>,
 {
     type Item = <I as FMIndexBackend>::T;
     fn next(&mut self) -> Option<Self::Item> {
@@ -97,7 +102,7 @@ where
 impl<T, I> Iterator for ForwardIterator<'_, I>
 where
     T: Character,
-    I: FMIndexBackend<T = T> + IndexWithConverter<T>,
+    I: FMIndexBackend<T = T>,
 {
     type Item = <I as FMIndexBackend>::T;
     fn next(&mut self) -> Option<Self::Item> {

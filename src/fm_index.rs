@@ -152,6 +152,7 @@ where
     C: Converter<T>,
 {
     type T = T;
+    type C = C;
 
     fn len(&self) -> u64 {
         self.bw.len() as u64
@@ -202,6 +203,10 @@ where
         self.bw
             .select_u64_unchecked((i - self.cs[c.into() as usize]) as usize, c.into())
             as u64
+    }
+
+    fn get_converter(&self) -> &Self::C {
+        &self.converter
     }
 }
 
