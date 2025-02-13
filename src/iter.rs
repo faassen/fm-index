@@ -1,5 +1,5 @@
 use crate::character::Character;
-use crate::converter::{Converter, IndexWithConverter};
+use crate::converter::Converter;
 use crate::seal;
 
 /// Trait for an FM-Index implementation.

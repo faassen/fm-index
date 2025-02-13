@@ -1,16 +1,13 @@
 use std::rc::Rc;
 
-use crate::{
-    converter::{Converter, IndexWithConverter},
-    Character, FMIndexBackend,
-};
+use crate::{converter::Converter, Character, FMIndexBackend};
 
 pub struct SearchIndex<T, C>
 where
     T: Character,
     C: Converter<T>,
 {
-    backend: Box<dyn FMIndexBackend<T = T, C = C>>,
+    backend: Rc<dyn FMIndexBackend<T = T, C = C>>,
 }
 
 impl<T, C> SearchIndex<T, C>
@@ -26,7 +23,15 @@ where
     where
         K: AsRef<[T]>,
     {
-        todo!()
+        Search::new(self.backend.clone()).search(pattern)
+    }
+
+    /// Get the length of the text in the index.
+    ///
+    /// Note that this includes an ending \0 (terminator) character
+    /// so will be one more than the length of the text passed in.
+    pub fn len(&self) -> u64 {
+        self.backend.len()
     }
 }
 
@@ -46,6 +51,16 @@ where
     T: Character,
     C: Converter<T>,
 {
+    pub(crate) fn new(backend: Rc<dyn FMIndexBackend<T = T, C = C>>) -> Self {
+        let e = backend.len();
+        Search {
+            backend,
+            s: 0,
+            e,
+            pattern: vec![],
+        }
+    }
+
     /// Search in the current search result, refining it.
     ///
     /// This adds a prefix `pattern` to the existing pattern, and

@@ -3,7 +3,6 @@ use crate::character::Character;
 #[cfg(doc)]
 use crate::converter;
 
-use crate::converter::IndexWithConverter;
 use crate::iter::{FMIndexBackend, HasPosition};
 use crate::{seal, BackwardIterator, ForwardIterator};
 
@@ -69,7 +68,7 @@ where
 
 impl<I> Search<'_, I>
 where
-    I: FMIndexBackend + IndexWithConverter<I::T>,
+    I: FMIndexBackend,
 {
     /// Get an iterator that goes backwards through the text, producing
     /// [`Character`].
@@ -86,7 +85,7 @@ where
 
 impl<I> Search<'_, I>
 where
-    I: FMIndexBackend + IndexWithConverter<I::T>,
+    I: FMIndexBackend,
 {
     /// Get an iterator that goes forwards through the text, producing
     /// [`Character`].

@@ -1,7 +1,7 @@
 use crate::character::{prepare_text, Character};
 #[cfg(doc)]
 use crate::converter;
-use crate::converter::{Converter, IndexWithConverter};
+use crate::converter::Converter;
 use crate::iter::{FMIndexBackend, HasPosition};
 use crate::suffix_array::sais;
 use crate::suffix_array::sample::{self, SuffixOrderSampledArray};
@@ -228,18 +228,6 @@ where
                 }
             }
         }
-    }
-}
-
-impl<T, C, S> IndexWithConverter<T> for FMIndex<T, C, S>
-where
-    C: Converter<T>,
-    T: Character,
-{
-    type C = C;
-
-    fn get_converter(&self) -> &Self::C {
-        &self.converter
     }
 }
 
